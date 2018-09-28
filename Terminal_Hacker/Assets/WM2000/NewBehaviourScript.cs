@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class NewBehaviourScript : MonoBehaviour {
+
+    //Game configuration data
+    string[] level1Passwords = {"books","aisle","self","password","font","borrow" };
+    string[] level2Passwords = { "prisoner", "handcuffs", "holster", "uniform", "arrest", "borrow" };
     //Gmae State
     int level;
     enum Screen { MainMenu, Password, Win};
@@ -46,18 +51,26 @@ public class NewBehaviourScript : MonoBehaviour {
 
     private void RunMainMenu(string input)
     {
-        if (input == "1")
+        bool isValidLevelNumber = ( input == "1" || input == "2" );
+        if(isValidLevelNumber)
         {
-            level = 1;
-            password = "donkey";
+            level = int.Parse(input);
+            StartGame();
+        }
+        /*if (input == "1")
+        {
+            System.Random rnd = new System.Random();
+            int number = rnd.Next(6);
+            password = level1Passwords[number];
             StartGame();
         }
         else if (input == "2")
         {
-            level = 2;
-            password = "combobulate";
+            System.Random rnd = new System.Random();
+            int number = rnd.Next(6);
+            password = level2Passwords[number];
             StartGame();
-        }
+        }*/
         else
         {
             Terminal.WriteLine("Please enter a vaild input");
@@ -67,7 +80,31 @@ public class NewBehaviourScript : MonoBehaviour {
     void StartGame()
     {
         CurrentScreen = Screen.Password;
-        Terminal.WriteLine("You have choosen level "+level);
+        Terminal.ClearScreen();
+        switch(level)
+        {
+            case 1:
+                {
+                    System.Random rnd = new System.Random();
+                    int number = rnd.Next(6);
+                    password = level1Passwords[number];
+                    break;
+                }
+            case 2:
+                {
+                    System.Random rnd = new System.Random();
+                    int number = rnd.Next(6);
+                    password = level2Passwords[number];
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError("Invalid level number");
+                    break;
+                }
+                
+                
+        }
         Terminal.WriteLine("Please enter you password:");
     }
     void CheckPassword(string input)
@@ -75,7 +112,7 @@ public class NewBehaviourScript : MonoBehaviour {
         if(input==password)
         {
             Terminal.WriteLine("WELL DONE!");
-            ShowMainMenu();
+            
         }
         else
         {
