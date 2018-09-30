@@ -86,14 +86,14 @@ public class NewBehaviourScript : MonoBehaviour {
             case 1:
                 {
                     System.Random rnd = new System.Random();
-                    int number = rnd.Next(6);
+                    int number = rnd.Next(level1Passwords.Length);
                     password = level1Passwords[number];
                     break;
                 }
             case 2:
                 {
                     System.Random rnd = new System.Random();
-                    int number = rnd.Next(6);
+                    int number = rnd.Next(level2Passwords.Length);
                     password = level2Passwords[number];
                     break;
                 }
@@ -105,19 +105,48 @@ public class NewBehaviourScript : MonoBehaviour {
                 
                 
         }
-        Terminal.WriteLine("Please enter you password:");
+        Terminal.WriteLine("Enter you password, hint:" + password.Anagram());
     }
     void CheckPassword(string input)
     {
         if(input==password)
         {
-            Terminal.WriteLine("WELL DONE!");
-            
+            DisplayWinScreen();
+
         }
         else
         {
             Terminal.WriteLine("Sorry, wrong password!");
-            Terminal.WriteLine("Please enter you password:");
+            Terminal.WriteLine("Enter you password, hint:"+password.Anagram());
+        }
+    }
+
+    void DisplayWinScreen()
+    {
+        CurrentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
+    }
+
+    void ShowLevelReward()
+    {
+        switch (level)
+        {
+            case 1:
+                {
+                    Terminal.WriteLine("WELL DONE on level1!");
+                    break;
+                }
+            case 2:
+                {
+                    Terminal.WriteLine("WELL DONE on level2!");
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError("Invalid level number");
+                    break;
+                }
         }
     }
 }
